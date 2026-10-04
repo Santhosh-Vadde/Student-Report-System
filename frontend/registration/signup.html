@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup | KL University Report System</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="auth-page">
+  <main class="auth-shell">
+    <section class="auth-brand signup-brand">
+      <div class="brand-mark">KL</div>
+      <p class="eyebrow">CREATE YOUR PROFILE</p>
+      <h1>Join the report portal</h1>
+      <p>Students can view their progress. Administrators can manage academic records.</p>
+    </section>
+    <section class="auth-card">
+      <div><p class="eyebrow">REGISTRATION</p><h2>Create account</h2></div>
+      <form id="signupForm" class="form-stack two-column-form">
+        <label>Full name<input id="signupName" type="text" placeholder="e.g. Ananya Sharma" required></label>
+        <label>KL University email<input id="signupEmail" type="email" placeholder="25000xxxxx@kluniversity.in" pattern="25000[0-9]{5}@kluniversity\.in" required></label>
+        <label>Role<select id="signupRole" required><option value="student">Student</option><option value="faculty">Faculty</option></select></label>
+        <label id="rollField">Student ID<input id="signupRoll" type="text" inputmode="numeric" pattern="25000[0-9]{5}" placeholder="e.g. 2500032284"></label>
+        <label id="classField">Department<select id="signupClass"><option value="CSE">CSE</option><option value="IT">IT</option><option value="ME">ME</option><option value="CE">CE</option><option value="ECE">ECE</option><option value="EEE">EEE</option><option value="ChE">ChE</option><option value="BT">BT</option><option value="AE">AE</option><option value="AI/DS">AI/DS</option></select></label>
+        <p id="facultySubjectsField" class="muted small-text full-span" hidden>Faculty access requires administrator approval and subject assignment.</p>
+        <p class="muted small-text full-span">Your password will be the 10-digit ID in your KL University email.</p>
+        <button class="btn primary full-span" type="submit">Create account</button>
+        <p id="authMessage" class="form-message full-span" role="alert"></p>
+      </form>
+      <p class="auth-switch">Already registered? <a href="../login/index.html">Go to login</a></p>
+    </section>
+  </main>
+  <script src="../modules/app.js"></script>
+</body>
+</html>

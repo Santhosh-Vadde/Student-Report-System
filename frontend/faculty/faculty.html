@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faculty Dashboard | KL University Report System</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="dashboard-page" data-role="faculty">
+  <aside class="sidebar">
+    <div class="sidebar-brand"><div class="brand-mark small">KL</div><div><strong>KL University</strong><span>Faculty Gradebook</span></div></div>
+    <nav class="side-nav" aria-label="Faculty navigation">
+      <button class="nav-link active" data-section="facultyOverview">▦ <span>Dashboard</span></button>
+      <button class="nav-link" data-section="facultyGradebook">✎ <span>Gradebook</span></button>
+      <button class="nav-link" data-section="facultyClasses">♙ <span>My Classes</span></button>
+      <button class="nav-link" data-section="facultyRollCall">✓ <span>Take Attendance</span></button>
+      <button class="nav-link" data-section="facultyOutcomes">▤ <span>Student Results</span></button>
+      <button class="nav-link" data-section="facultyAtRisk">⚠ <span>At-Risk Students</span></button>
+      <button class="nav-link" data-section="facultyMentees">☺ <span>My Mentees</span></button>
+      <button class="nav-link" data-section="facultyWeakTopics">◇ <span>Weak Topics</span></button>
+      <button class="nav-link" data-section="facultyCO">◈ <span>CO Attainment</span></button>
+      <button class="nav-link" data-section="facultyCoverage">☷ <span>Lesson Coverage</span></button>
+      <button class="nav-link" data-section="facultyAttendance">✓ <span>Attendance Totals</span></button>
+      <button class="nav-link" data-section="facultyRemarks">☷ <span>Remarks</span></button>
+      <button class="nav-link" data-section="facultyReports">▤ <span>Reports</span></button>
+      <button class="nav-link" data-section="facultyAssignments">☷ <span>Assignments</span></button>
+      <button class="nav-link" data-section="facultyBonus">★ <span>Bonus Marks</span></button>
+      <button class="nav-link" data-section="facultySubstitution">🔁 <span>Leave &amp; Substitution</span></button>
+      <button class="nav-link" data-section="facultyReeval">✎ <span>Re-evaluation Requests</span></button>
+      <button class="nav-link" data-section="facultyTeachingFeedback">★ <span>Teaching Feedback</span></button>
+      <button class="nav-link" data-section="facultySchedule">◷ <span>Schedule</span></button>
+      <button class="nav-link" data-section="facultyAnnouncements">◉ <span>Announcements</span></button>
+      <button class="nav-link" data-section="facultyProfile">⚙ <span>My Profile</span></button>
+      <button class="nav-link" data-section="facultySubjects"># <span>Assigned Subjects</span></button>
+    </nav>
+    <button class="nav-link logout" id="logoutBtn">↪ <span>Logout</span></button>
+  </aside>
+
+  <div class="dashboard-main">
+    <header class="topbar"><button id="menuBtn" class="icon-btn" aria-label="Toggle menu">☰</button><div><h2 id="pageTitle">Dashboard</h2></div><button class="user-chip" id="profileSettingsBtn" type="button" aria-label="Open profile settings"><span class="avatar" id="userInitial">F</span><span class="user-chip-text"><strong id="currentUserName">Faculty</strong><span>Faculty</span></span></button></header>
+    <main class="content-area">
+      <section class="page-section active" id="facultyOverview">
+        <div class="welcome-banner faculty-banner"><div><p class="eyebrow">FACULTY GRADEBOOK</p><h1>Welcome, <span id="welcomeName">Faculty</span></h1><p>Review assigned courses and current grading progress.</p></div><div class="banner-art">Σ</div></div>
+        <div class="stat-grid">
+          <article class="stat-card"><span class="stat-icon blue">#</span><div><p>Assigned Subjects</p><strong id="assignedSubjectCount">0</strong><small>Current semester</small></div></article>
+          <article class="stat-card"><span class="stat-icon green">♙</span><div><p>Enrolled Students</p><strong id="facultyStudentCount">0</strong><small>Across your subjects</small></div></article>
+          <article class="stat-card"><span class="stat-icon amber">✓</span><div><p>Grade Records</p><strong id="facultyGradedCount">0</strong><small>Completed entries</small></div></article>
+          <article class="stat-card"><span class="stat-icon purple">%</span><div><p>Subject Average</p><strong id="facultyOverallAverage">0%</strong><small>Across assigned subjects</small></div></article>
+        </div>
+        <div class="dashboard-grid faculty-focus-grid"><article class="panel"><div class="panel-heading"><div><h3>Today's classes</h3><p>Your timetable for the current day</p></div></div><div id="facultyTodaySchedule"></div></article><article class="panel"><div class="panel-heading"><div><h3>Pending tasks</h3><p>Items that need attention</p></div></div><div id="facultyPendingTasks" class="action-list"></div></article></div>
+        <div class="panel data-block"><div class="panel-heading"><div><h3>Recent staff announcements</h3><p>Messages from administration</p></div></div><div id="facultyRecentAnnouncements" class="notice-list"></div></div>
+        <div id="facultySubjectCards" class="faculty-subject-grid data-block"></div>
+      </section>
+
+      <section class="page-section" id="facultyGradebook">
+        <div class="section-heading"><div><h1>Gradebook</h1><p>Enter marks only for a subject assigned to you.</p></div><div class="inline-controls"><select id="gradebookSubject"></select></div></div>
+        <div class="panel import-row" id="gradebookImportPanel"><strong>Bulk import:</strong><input id="gradebookCsvInput" type="file" accept=".csv,text/csv"><button type="button" class="btn secondary" id="gradebookCsvBtn">Import marks from CSV</button><a href="#" id="gradebookCsvTemplate">Download template</a><span id="gradebookCsvMessage" class="form-message"></span></div>
+        <form id="gradebookForm" class="panel gradebook-panel">
+          <div class="grade-formula"><strong>Final score</strong><span>Internals 40% + Mid 1 15% + Mid 2 15% + Semester End 30%</span></div>
+          <div class="table-tools"><input id="gradebookSearch" type="search" placeholder="Search student name or ID"><span id="gradebookCount"></span></div>
+          <div class="table-wrap"><table class="gradebook-table"><thead><tr><th>Student</th><th>Assignment</th><th>ALM</th><th>Quiz</th><th>Lab</th><th>Internal</th><th>Mid 1</th><th>Mid 2</th><th>Sem End</th><th>Final</th></tr></thead><tbody id="gradebookBody"></tbody></table></div>
+          <div class="submission-strip"><span id="gradebookStatus" class="status-pill warn">Draft</span><span id="gradebookSubmissionInfo">Grades are editable until submitted.</span></div>
+          <div class="gradebook-actions"><p id="gradebookMessage" class="form-message"></p><button type="submit" class="btn secondary" id="saveGradebookBtn">Save Draft</button><button type="button" class="btn primary" id="submitGradebookBtn">Submit to Admin</button></div>
+        </form>
+      </section>
+
+      <section class="page-section" id="facultyClasses">
+        <div class="section-heading"><div><h1>My Classes</h1><p>View assigned rosters and read-only student details.</p></div><div class="inline-controls"><select id="rosterSubject"></select><button id="exportRosterBtn" class="btn secondary" type="button">Export Roster (.csv)</button></div></div>
+        <div class="panel"><div class="table-tools"><input id="rosterSearch" type="search" placeholder="Search student name, ID, or section"><span id="rosterCount"></span></div><div class="table-wrap"><table><thead><tr><th>Student</th><th>ID</th><th>Department</th><th>Batch / Section</th><th>Attendance</th><th>Average</th><th>Report</th></tr></thead><tbody id="facultyRosterBody"></tbody></table></div></div>
+      </section>
+
+      <section class="page-section" id="facultyAttendance">
+        <div class="section-heading"><div><h1>Subject Attendance</h1><p>Record the weighted primary and secondary attendance for your subject.</p></div><div class="inline-controls"><select id="facultyAttendanceSubject"></select></div></div>
+        <form id="facultyAttendanceForm" class="panel"><div class="table-wrap"><table><thead><tr><th>Student</th><th id="facultyPrimaryHeading">Primary (75%)</th><th id="facultySecondaryHeading">Secondary (25%)</th><th>Calculated</th></tr></thead><tbody id="facultyAttendanceBody"></tbody></table></div><div class="gradebook-actions"><p id="facultyAttendanceMessage" class="form-message"></p><button class="btn primary" type="submit">Save Attendance</button></div></form>
+      </section>
+
+      <section class="page-section" id="facultyRemarks">
+        <div class="section-heading"><div><h1>Student Remarks</h1><p>Add concise subject feedback for report cards.</p></div><div class="inline-controls"><select id="remarksSubject"></select></div></div>
+        <div class="panel"><div class="remarks-toolbar"><label>Approved remark<select id="remarkPreset"><option value="">Choose a standard remark</option><option>Excellent performance and participation.</option><option>Consistent progress throughout the term.</option><option>Requires additional practice in core concepts.</option><option>Attendance needs improvement.</option><option>Participates actively and completes work on time.</option></select></label></div><form id="facultyRemarksForm"><div id="facultyRemarksList" class="remarks-list"></div><div class="gradebook-actions"><p id="facultyRemarksMessage" class="form-message"></p><button class="btn primary" type="submit">Save Remarks</button></div></form></div>
+        <div class="panel data-block"><div class="panel-heading"><div><h3>Internal notes</h3><p>Visible only to faculty teaching this subject, never shown to the student.</p></div></div><form id="internalNotesForm"><div id="internalNotesList"></div><div class="gradebook-actions"><p id="internalNotesMessage" class="form-message"></p><button class="btn primary" type="submit">Save Internal Notes</button></div></form></div>
+      </section>
+
+      <section class="page-section" id="facultyReports">
+        <div class="section-heading"><div><h1>Subject Reports</h1><p>Review one subject and export all subjects assigned to you.</p></div><div class="inline-controls"><select id="reportSubject"></select><button type="button" class="btn secondary" id="downloadClassPdfBtn">Download Class PDF</button><button type="button" class="btn primary" id="exportFacultyReport">Export Assigned Subjects (.csv)</button></div></div>
+        <div id="facultyReportSummary" class="stat-grid"></div>
+        <div id="facultyGradeDistribution" class="grade-distribution"></div>
+        <div class="panel data-block"><div class="panel-heading"><div><h3>Benchmark comparison</h3><p>This offering against a reference benchmark for the course (indicative, not an actual past-semester record)</p></div></div><div id="semesterComparison"></div></div>
+        <div class="panel"><div class="table-wrap"><table><thead><tr><th>Student</th><th>ID</th><th>Semester</th><th>Internals</th><th>Mid 1</th><th>Mid 2</th><th>Sem End</th><th>Final</th><th>Grade</th></tr></thead><tbody id="facultyReportBody"></tbody></table></div></div>
+        <div class="panel data-block"><div class="panel-heading"><div><h3>Published history</h3><p>Previous result snapshots containing your assigned subjects</p></div></div><div id="facultyHistory"></div></div>
+      </section>
+
+      <section class="page-section" id="facultyRollCall">
+        <div class="section-heading"><div><h1>Take Attendance</h1><p>Mark each student present or absent. Saving texts the parent and the student of every absentee.</p></div></div>
+        <form id="rollForm" class="panel">
+          <div class="roll-controls"><label>Subject<select id="rollSubject"></select></label><label>Class type<select id="rollComponent"></select></label><label>Date<input id="rollDate" type="date" required></label><label>Period<select id="rollPeriod"></select></label><label>Section<select id="rollSection"></select></label></div>
+          <div class="table-tools"><span id="rollSummary"></span><button type="button" class="btn secondary small" id="rollMarkAll">Mark all present</button></div>
+          <div class="table-wrap"><table><thead><tr><th>Student</th><th>ID</th><th>Section</th><th>Parent contact</th><th>Attendance</th><th>Status</th></tr></thead><tbody id="rollBody"></tbody></table></div>
+          <div class="gradebook-actions"><p id="rollMessage" class="form-message"></p><button class="btn primary" type="submit">Save Attendance & Notify</button></div>
+        </form>
+        <div class="panel data-block"><div class="panel-heading"><div><h3>Recent messages</h3><p>Absence texts to parents and students. No SMS gateway is connected, so delivery is simulated.</p></div><button type="button" class="btn secondary" id="sendDigestBtn">Send weekly digest</button></div><p id="digestMessage" class="form-message"></p><div class="table-wrap"><table><thead><tr><th>Sent</th><th>To</th><th>Number</th><th>Message</th><th>Status</th></tr></thead><tbody id="smsLogBody"></tbody></table></div></div>
+        <div class="panel data-block"><div class="panel-heading"><div><h3>Code check-in session</h3><p>Start a session so students can self check-in with a code instead of a manual roll call.</p></div></div><div id="checkinPanel" class="checkin-panel"></div></div>
+      </section>
+
+      <section class="page-section" id="facultyOutcomes">
+        <div class="section-heading"><div><h1>Student Results</h1><p>Passed, failed, and detained students. Detained means attendance below 75%.</p></div><div class="inline-controls"><select id="outcomeSubject"></select><select id="outcomeStatus"><option value="all">All statuses</option><option>Passed</option><option>Failed</option><option>Detained</option></select></div></div>
+        <div id="outcomeStats" class="stat-grid"></div>
+        <div class="panel"><div class="table-wrap"><table><thead><tr><th>Student</th><th>ID</th><th>Section</th><th>Score</th><th>Grade</th><th>Attendance</th><th>Status</th></tr></thead><tbody id="outcomeBody"></tbody></table></div></div>
+      </section>
+
+      <section class="page-section" id="facultyAtRisk">
+        <div class="section-heading"><div><h1>At-Risk Students</h1><p>Students trending toward Fail or Detained, with the reason, before the semester ends.</p></div><div class="inline-controls"><select id="atRiskSubject"></select></div></div>
+        <div id="atRiskStats" class="stat-grid"></div>
+        <div id="atRiskList" class="panel"></div>
+      </section>
+
+      <section class="page-section" id="facultyMentees">
+        <div class="section-heading"><div><h1>My Mentees</h1><p>Cross-subject academic snapshot for students in your mentor section(s). An administrator assigns mentor sections from the Faculty dialog.</p></div></div>
+        <div id="menteeStats" class="stat-grid"></div>
+        <form id="menteeNotesForm" class="panel data-block"><div id="menteeList"></div><div class="gradebook-actions"><p id="menteeNotesMessage" class="form-message"></p><button type="submit" class="btn primary">Save Mentor Notes</button></div></form>
+      </section>
+
+      <section class="page-section" id="facultyWeakTopics">
+        <div class="section-heading"><div><h1>Weak Topics</h1><p>Which questions the class lost the most marks on, from the same question-wise marks students see.</p></div><div class="inline-controls"><select id="weakTopicSubject"></select><select id="weakTopicExam"></select></div></div>
+        <div id="weakTopicSummary" class="panel"></div>
+      </section>
+
+      <section class="page-section" id="facultyCO">
+        <div class="section-heading"><div><h1>Course Outcome Attainment</h1><p>CO1–CO5 attainment from assignment, ALM, tutorial/quiz, lab and exam marks.</p></div><div class="inline-controls"><select id="coSubject"></select></div></div>
+        <div id="coAttainment" class="panel"></div>
+        <div class="panel data-block"><div class="panel-heading"><div><h3>CO–PO Mapping &amp; Attainment</h3><p>Set a correlation level (0 = none, 1 = low, 2 = medium, 3 = high) for each CO against each PO; PO attainment is computed from the CO levels above.</p></div></div><div id="coPoMatrix" class="tw"></div><div class="gradebook-actions"><p id="coPoMessage" class="form-message"></p><button type="button" class="btn primary" id="saveCoPoBtn">Save Mapping</button></div><div id="poAttainment"></div></div>
+      </section>
+
+      <section class="page-section" id="facultyCoverage">
+        <div class="section-heading"><div><h1>Lesson Coverage</h1><p>Track what has actually been taught against the plan, so outcome and exam results have real teaching evidence behind them.</p></div><div class="inline-controls"><select id="coverageSubject"></select></div></div>
+        <div id="coverageStats" class="stat-grid"></div>
+        <form id="coverageAddForm" class="panel compact-form"><h3>Add a topic</h3><div class="form-row"><label>Topic<input id="coverageTitle" maxlength="120" required></label><label>Planned week<input id="coverageWeek" type="number" min="1" max="20" required></label></div><button class="btn primary" type="submit">Add Topic</button><p id="coverageMessage" class="form-message"></p></form>
+        <div class="panel" id="coverageList"></div>
+      </section>
+
+      <section class="page-section" id="facultyAssignments">
+        <div class="section-heading"><div><h1>Assignments</h1><p>Publish work for students enrolled in your subjects.</p></div></div>
+        <form id="facultyAssignmentForm" class="panel assignment-form"><label>Subject<select id="assignmentSubject" required></select></label><label>Assignment title<input id="assignmentTitle" maxlength="100" required></label><label>Due date<input id="assignmentDue" type="date" required></label><label>Maximum marks<input id="assignmentMarks" type="number" min="1" max="100" value="20" required></label><button class="btn primary" type="submit">Publish Assignment</button><p id="assignmentMessage" class="form-message"></p></form>
+        <div id="facultyAssignmentList" class="assignment-list"></div>
+        <div class="panel data-block"><div class="panel-heading"><div><h3>Grade submissions</h3><p>Pick an assignment to grade against a rubric</p></div><select id="gradingAssignmentSelect"></select></div><div id="gradingPanel"></div></div>
+      </section>
+
+      <section class="page-section" id="facultyBonus">
+        <div class="section-heading"><div><h1>Co-curricular / Bonus Marks</h1><p>Award justified bonus internal points for co-curricular achievement. Sent to the administrator for approval before it affects the gradebook.</p></div></div>
+        <form id="bonusForm" class="panel compact-form">
+          <h3>New bonus request</h3>
+          <label>Subject<select id="bonusSubject" required></select></label>
+          <label>Student<select id="bonusStudent" required></select></label>
+          <label>Bonus points (added to Internal)<input id="bonusPoints" type="number" min="1" max="10" value="2" required></label>
+          <label>Reason<textarea id="bonusReason" rows="2" maxlength="200" placeholder="e.g. Won inter-college hackathon, represented college in sports" required></textarea></label>
+          <button class="btn primary" type="submit">Submit for Approval</button>
+          <p id="bonusMessage" class="form-message"></p>
+        </form>
+        <div class="panel data-block" id="facultyBonusQueue"></div>
+      </section>
+
+      <section class="page-section" id="facultySubstitution">
+        <div class="section-heading"><div><h1>Leave &amp; Substitution</h1><p>Request leave for a class; the system suggests free faculty and rooms for that slot.</p></div></div>
+        <form id="substitutionForm" class="panel compact-form">
+          <h3>Request leave</h3>
+          <label>Subject<select id="subSubject" required></select></label>
+          <div class="form-row"><label>Date<input id="subDate" type="date" required></label><label>Period<select id="subPeriod" required></select></label></div>
+          <label>Reason<textarea id="subReason" rows="2" maxlength="200" placeholder="Why you need a substitute"></textarea></label>
+          <button class="btn primary" type="submit">Submit Request</button>
+          <p id="subMessage" class="form-message"></p>
+        </form>
+        <div class="panel data-block"><div class="panel-heading"><div><h3>Free faculty and rooms for this slot</h3><p>Updates as you pick a date and period above</p></div></div><div id="subFreeList"></div></div>
+        <div class="panel data-block"><div class="panel-heading"><div><h3>Your requests</h3><p>Requests you submitted, and substitutions assigned to you</p></div></div><div id="subQueue"></div></div>
+      </section>
+
+      <section class="page-section" id="facultyReeval">
+        <div class="section-heading"><div><h1>Re-evaluation Requests</h1><p>Students can ask you to review one question's marks after the booklet is evaluated.</p></div></div>
+        <div id="reevalQueue" class="panel"></div>
+      </section>
+
+      <section class="page-section" id="facultyTeachingFeedback">
+        <div class="section-heading"><div><h1>Teaching Feedback</h1><p>Student feedback received for your subjects, summarized by question.</p></div><div class="inline-controls"><select id="feedbackSubjectFilter"></select></div></div>
+        <div id="teachingFeedbackSummary" class="panel"></div>
+      </section>
+
+      <section class="page-section" id="facultySchedule">
+        <div class="section-heading"><div><h1>Teaching Schedule</h1><p>Your classes and published examinations.</p></div></div>
+        <div class="schedule-grid"><div class="panel"><div class="panel-heading"><div><h3>Weekly timetable</h3></div></div><div id="facultyTimetable"></div></div><div class="panel"><div class="panel-heading"><div><h3>Upcoming examinations</h3></div></div><div id="facultyExams"></div></div></div>
+      </section>
+
+      <section class="page-section" id="facultyAnnouncements">
+        <div class="section-heading"><div><h1>Announcements</h1><p>Publish subject updates and review academic notices.</p></div></div>
+        <form id="facultyAnnouncementForm" class="panel announcement-form"><label>Title<input id="facultyAnnouncementTitle" required maxlength="80"></label><label>Subject<select id="facultyAnnouncementSubject" required></select></label><label class="full-span">Message<textarea id="facultyAnnouncementMessage" rows="3" maxlength="240" required></textarea></label><button class="btn primary" type="submit">Publish Announcement</button><p id="facultyAnnouncementStatus" class="form-message"></p></form>
+        <div id="facultyAnnouncementList" class="notice-list"></div>
+      </section>
+
+      <section class="page-section" id="facultyProfile">
+        <div class="section-heading"><div><h1>My Profile</h1><p>Maintain your faculty contact details and password.</p></div></div>
+        <form id="facultyProfileForm" class="panel profile-settings-form"><label>Full name<input id="facultyProfileName" required></label><label>University email<input id="facultyProfileEmail" readonly></label><label>Contact number<input id="facultyProfileContact" inputmode="tel" placeholder="10-digit mobile number"></label><label>Department<input id="facultyProfileDepartment" placeholder="e.g. CSE"></label><label>New password<input id="facultyProfilePassword" type="password" minlength="8" placeholder="Leave blank to keep current password"></label><label>Confirm password<input id="facultyProfilePasswordConfirm" type="password" minlength="8"></label><button class="btn primary" type="submit">Save Profile</button><p id="facultyProfileMessage" class="form-message"></p></form>
+      </section>
+
+      <section class="page-section" id="facultySubjects">
+        <div class="section-heading"><div><h1>Assigned Subjects</h1><p>These courses are managed by the administrator.</p></div></div>
+        <form id="facultySubjectsForm" class="panel subject-registration"><div id="facultySubjectChoices" class="subject-choice-grid"></div><div class="dialog-actions"><p id="facultySubjectsMessage" class="form-message">Contact the administrator to change an assignment.</p></div></form>
+      </section>
+    </main>
+  </div>
+  <dialog id="facultyReportDialog">
+    <div class="dialog-form">
+      <div class="dialog-heading"><h2>Student Report</h2><button type="button" class="icon-btn" id="closeFacultyReportDialog">×</button></div>
+      <div id="facultyReportContainer"></div>
+    </div>
+  </dialog>
+  <script src="../modules/app.js"></script>
+  <script src="../modules/student-data.js"></script>
+  <script src="../modules/faculty-plus.js"></script>
+  <script src="../login/logout.js"></script>
+</body>
+</html>

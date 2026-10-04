@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | KL University Report System</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="dashboard-page" data-role="admin">
+  <aside class="sidebar">
+    <div class="sidebar-brand"><div class="brand-mark small">KL</div><div><strong>KL University</strong><span>Report System</span></div></div>
+    <nav class="side-nav" aria-label="Admin navigation">
+      <button class="nav-link active" data-section="overview">▦ <span>Dashboard</span></button>
+      <button class="nav-link" data-section="students">♙ <span>Students</span></button>
+      <button class="nav-link" data-section="facultyManagement">♙ <span>Faculty</span></button>
+      <button class="nav-link" data-section="records">✎ <span>Academic Records</span></button>
+      <button class="nav-link" data-section="attendance">✓ <span>Attendance</span></button>
+      <button class="nav-link" data-section="reports">▤ <span>Reports</span></button>
+      <button class="nav-link" data-section="branchReports">▤ <span>Branch & Section Results</span></button>
+      <button class="nav-link" data-section="classrooms">▦ <span>Classrooms</span></button>
+      <button class="nav-link" data-section="gradeOversight">✓ <span>Grade Oversight</span></button>
+      <button class="nav-link" data-section="academicSetup">▦ <span>Academic Setup</span></button>
+      <button class="nav-link" data-section="registrations">☷ <span>Registrations</span></button>
+      <button class="nav-link" data-section="academicClearance">🛡️ <span>Exam Clearance</span></button>
+      <button class="nav-link" data-section="substitutions">🔁 <span>Substitutions</span></button>
+      <button class="nav-link" data-section="bonusMarks">★ <span>Bonus Marks</span></button>
+      <button class="nav-link" data-section="announcements">◉ <span>Announcements</span></button>
+      <button class="nav-link" data-section="settings">⚙ <span>Grading Settings</span></button>
+      <button class="nav-link" data-section="systemSettings">⚙ <span>System & Backup</span></button>
+    </nav>
+    <button class="nav-link logout" id="logoutBtn">↪ <span>Logout</span></button>
+  </aside>
+
+  <div class="dashboard-main">
+    <header class="topbar">
+      <button id="menuBtn" class="icon-btn" aria-label="Toggle menu">☰</button>
+      <div><h2 id="pageTitle">Dashboard</h2></div>
+      <button class="user-chip" id="profileSettingsBtn" type="button" aria-label="Open profile settings"><span class="avatar" id="userInitial">A</span><span class="user-chip-text"><strong id="currentUserName">Administrator</strong><span>Admin</span></span></button>
+    </header>
+
+    <main class="content-area">
+      <section class="page-section active" id="overview">
+        <div class="welcome-banner"><div><p class="eyebrow">ACADEMIC OVERVIEW</p><h1>Welcome back, <span id="welcomeName">Admin</span></h1><p>Here is the latest student performance summary.</p></div><div class="banner-art">A+</div></div>
+        <div class="stat-grid">
+          <article class="stat-card"><span class="stat-icon blue">♙</span><div><p>Active Students</p><strong id="totalStudents">0</strong><small id="archivedStudentCount">0 archived</small></div></article>
+          <article class="stat-card"><span class="stat-icon green">♙</span><div><p>Active Faculty</p><strong id="totalFaculty">0</strong><small id="assignedFacultyCount">0 with subjects</small></div></article>
+          <article class="stat-card"><span class="stat-icon amber">#</span><div><p>Departments / Sections</p><strong id="departmentCount">0 / 0</strong><small>Across active students</small></div></article>
+          <article class="stat-card"><span class="stat-icon purple">%</span><div><p>Average Score</p><strong id="classAverage">0%</strong><small id="avgAttendance">0% attendance</small></div></article>
+          <article class="stat-card"><span class="stat-icon amber">!</span><div><p>Detained Students</p><strong id="detainedCount">0</strong><small>Attendance below 75%</small></div></article>
+          <article class="stat-card"><span class="stat-icon red">⛔</span><div><p>Suspended Students</p><strong id="suspendedCount">0</strong><small>Disciplinary hold</small></div></article>
+        </div>
+        <div class="dashboard-grid">
+          <article class="panel"><div class="panel-heading"><div><h3>Pending actions</h3><p>Records that need administrative attention</p></div></div><div id="pendingActions" class="action-list"></div></article>
+          <article class="panel"><div class="panel-heading"><div><h3>Recent activity</h3><p>Latest changes in this browser</p></div></div><div id="recentActivity" class="activity-list"></div></article>
+        </div>
+        <div class="dashboard-grid">
+          <article class="panel"><div class="panel-heading"><div><h3>Detained students</h3><p>Overall attendance below 75% - needs follow-up</p></div></div><div id="detainedList" class="action-list"></div></article>
+          <article class="panel"><div class="panel-heading"><div><h3>Suspended students</h3><p>Disciplinary hold, set from the Students page</p></div></div><div id="suspendedList" class="action-list"></div></article>
+        </div>
+        <article class="panel data-block"><div class="panel-heading"><div><h3>Class performance</h3><p>Average marks by subject</p></div></div><div id="subjectChart" class="bar-chart"></div></article>
+      </section>
+
+      <section class="page-section" id="students">
+        <div class="section-heading"><div><h1>Student Management</h1><p>Add, update, archive, or restore student profiles.</p></div><button class="btn primary" id="addStudentBtn">+ Add Student</button></div>
+        <div class="panel import-row" id="studentImportPanel"><strong>Bulk import:</strong><input id="studentCsvInput" type="file" accept=".csv,text/csv"><button type="button" class="btn secondary" id="studentCsvBtn">Import students from CSV</button><a href="#" id="studentCsvTemplate">Download template</a><span id="studentCsvMessage" class="form-message"></span></div>
+        <div class="panel"><div class="table-tools"><input id="studentSearch" type="search" placeholder="Search by name, ID, or department"><select id="studentFilterDepartment" aria-label="Filter by department"><option value="all">All departments</option></select><select id="studentFilterFaculty" aria-label="Filter by faculty"><option value="all">All faculty</option></select><span id="studentCount"></span></div><div class="table-wrap"><table><thead><tr><th>Student</th><th>Student ID</th><th>Department</th><th>Status</th><th>Attendance</th><th>Average</th><th>Actions</th></tr></thead><tbody id="studentsTable"></tbody></table></div></div>
+      </section>
+
+      <section class="page-section" id="facultyManagement">
+        <div class="section-heading"><div><h1>Faculty Management</h1><p>Create accounts, assign subjects, reset credentials, and archive access.</p></div><button class="btn primary" id="addFacultyBtn">+ Add Faculty</button></div>
+        <div class="panel"><div class="table-tools"><input id="facultySearch" type="search" placeholder="Search by name, ID, or subject"><select id="facultyFilterDepartment" aria-label="Filter by department"><option value="all">All departments</option></select><span id="facultyCount"></span></div><div class="table-wrap"><table><thead><tr><th>Faculty</th><th>Faculty ID</th><th>Assigned Subjects</th><th>Currently teaching</th><th>Status</th><th>Actions</th></tr></thead><tbody id="facultyTable"></tbody></table></div></div>
+      </section>
+
+      <section class="page-section" id="records">
+        <div class="section-heading"><div><h1>Academic Records</h1><p>Enter subject marks and teacher remarks.</p></div></div>
+        <div class="panel record-layout">
+          <label>Select student<select id="recordStudentSelect"></select></label>
+          <form id="recordForm" class="record-form">
+            <div id="marksInputs" class="marks-grid"></div>
+            <label class="wide-field">Teacher remarks<textarea id="remarksInput" rows="4" placeholder="Write a short performance remark"></textarea></label>
+            <button type="submit" class="btn primary wide-field">Save Academic Record</button>
+            <p id="recordMessage" class="form-message wide-field"></p>
+          </form>
+        </div>
+        <div class="panel data-block" id="recordsOverviewPanel">
+          <div class="panel-heading"><div><h3>Department &amp; faculty overview</h3><p>Marks faculty have submitted, pass/fail/detained breakdown for the selected filter</p></div></div>
+          <div class="inline-controls"><select id="recordsFilterDepartment" aria-label="Filter by department"><option value="all">All departments</option></select><select id="recordsFilterFaculty" aria-label="Filter by faculty"><option value="all">All faculty</option></select></div>
+          <div id="recordsOverviewStats" class="stat-grid"></div>
+          <div id="recordsOverviewTable"></div>
+        </div>
+      </section>
+
+      <section class="page-section" id="attendance">
+        <div class="section-heading"><div><h1>Subject Attendance</h1><p>Enter both percentages. The primary period contributes 75% and the secondary period contributes 25%.</p></div></div>
+        <div class="panel attendance-layout">
+          <label>Select student<select id="attendanceStudentSelect"></select></label>
+          <form id="attendanceForm">
+            <div id="attendanceInputs" class="attendance-grid"></div>
+            <div class="attendance-summary"><span>Overall attendance</span><strong id="attendancePreview">0%</strong></div>
+            <button type="submit" class="btn primary">Save Attendance</button>
+            <p id="attendanceMessage" class="form-message"></p>
+          </form>
+        </div>
+        <div class="panel data-block" id="attendanceShortagePanel"><div class="panel-heading"><div><h3>Attendance shortage notices</h3><p>Students below 75% overall attendance. Download a warning letter to send home.</p></div></div><div id="attendanceShortageList"></div></div>
+        <div class="panel data-block" id="facultyAttendancePanel"><div class="panel-heading"><div><h3>Faculty attendance</h3><p>Classes each faculty member has actually conducted (roll call / check-in taken), based on logged attendance records</p></div></div><div id="facultyAttendanceList"></div></div>
+      </section>
+
+      <section class="page-section" id="reports">
+        <div class="section-heading"><div><h1>Progress Reports</h1><p>Preview and print a complete student report.</p></div><div class="inline-controls"><select id="reportStudentSelect"></select><button id="printAdminReport" class="btn secondary">Print Report</button></div></div>
+        <div class="panel"><div class="table-tools"><input id="reportIdSearch" type="search" placeholder="Search by student ID or name"><select id="reportFilterDepartment" aria-label="Filter by department"><option value="all">All departments</option></select><span id="reportFilterCount"></span></div></div>
+        <div id="adminReportContainer"></div>
+        <div class="panel data-block" id="documentGeneratorPanel">
+          <div class="panel-heading"><div><h3>Official Documents</h3><p>Generate PDF documents for the student selected above.</p></div></div>
+          <div class="form-row"><button type="button" class="btn secondary" id="downloadTranscriptBtn">Download Transcript (PDF)</button></div>
+          <div class="form-row"><label>Bonafide purpose<input id="bonafidePurpose" placeholder="e.g. Bank loan application" value="General purpose"></label><button type="button" class="btn secondary" id="downloadBonafideBtn">Bonafide Certificate</button></div>
+          <div class="form-row"><label>Transfer reason<input id="transferReason" placeholder="e.g. Course completed" value="Course completed"></label><button type="button" class="btn secondary" id="downloadTransferBtn">Transfer Certificate</button></div>
+          <p id="documentMessage" class="form-message"></p>
+        </div>
+      </section>
+
+      <section class="page-section" id="gradeOversight">
+        <div class="section-heading"><div><h1>Grade Oversight</h1><p>Audit completion, publish semester results, and retain report history.</p></div><button id="publishGradesBtn" class="btn primary">Publish Current Results</button></div>
+        <div id="gradeOversightStats" class="stat-grid"></div>
+        <div class="panel"><div class="panel-heading"><div><h3>Missing grades by subject</h3><p>Where the gaps are, so you know which faculty to follow up with</p></div></div><div id="missingGradesBySubject"></div></div>
+        <div class="panel"><div class="panel-heading"><div><h3>Faculty submissions</h3><p>Submitted gradebooks are locked until reopened here</p></div></div><div id="facultySubmissionList"></div></div>
+        <div class="panel"><div class="panel-heading"><div><h3>Publication history</h3><p>Read-only snapshots of published results</p></div></div><div id="publicationHistory"></div><p id="publishGradesMessage" class="form-message"></p></div>
+      </section>
+
+      <section class="page-section" id="academicSetup">
+        <div class="section-heading"><div><h1>Academic Setup</h1><p>Maintain the timetable and examination schedule.</p></div></div>
+        <div class="management-grid">
+          <form id="timetableForm" class="panel compact-form"><h3>Add timetable slot</h3><label>Day<select id="timetableDay" required><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option></select></label><div class="form-row"><label>Starts<input id="timetableStart" type="time" required></label><label>Ends<input id="timetableEnd" type="time" required></label></div><label>Subject<select id="timetableSubject" required></select></label><label>Room<input id="timetableRoom" required placeholder="e.g. C-204"></label><button class="btn primary" type="submit">Add Slot</button><p id="timetableMessage" class="form-message"></p></form>
+          <form id="examForm" class="panel compact-form"><h3>Add examination</h3><label>Subject<select id="examSubject" required></select></label><label>Assessment<input id="examType" required placeholder="e.g. Mid 1"></label><div class="form-row"><label>Date<input id="examDate" type="date" required></label><label>Time<input id="examTime" type="time" required></label></div><label>Room<input id="examRoom" required placeholder="e.g. R-210"></label><button class="btn primary" type="submit">Add Examination</button><p id="examMessage" class="form-message"></p></form>
+        </div>
+        <form id="termSettingsForm" class="panel term-form"><div><h3>Current academic period</h3><p class="muted">These details identify the active reporting period.</p></div><label>Academic year<input id="academicYear" required placeholder="2026-2027"></label><label>Semester name<input id="semesterName" required placeholder="Semester 5"></label><label>Starts<input id="semesterStart" type="date" required></label><label>Ends<input id="semesterEnd" type="date" required></label><button class="btn primary" type="submit">Save Period</button><p id="termSettingsMessage" class="form-message"></p></form>
+        <form id="examWeightsForm" class="panel term-form"><div><h3>Examination setup</h3><p class="muted">Weightage used in the final score formula. Must add up to 100.</p></div><label>Internals %<input id="weightInternal" type="number" min="0" max="100" required></label><label>Mid 1 %<input id="weightMid1" type="number" min="0" max="100" required></label><label>Mid 2 %<input id="weightMid2" type="number" min="0" max="100" required></label><label>Semester End %<input id="weightSemEnd" type="number" min="0" max="100" required></label><button class="btn primary" type="submit">Save Weightage</button><p id="examWeightsMessage" class="form-message"></p></form>
+        <div class="panel data-block"><div class="panel-heading"><div><h3>Weekly timetable</h3><p>Shared by students and faculty</p></div></div><div id="adminTimetable"></div></div>
+        <div class="panel data-block"><div class="panel-heading"><div><h3>Examination schedule</h3><p>Published assessment dates</p></div></div><div id="adminExams"></div></div>
+      </section>
+
+      <section class="page-section" id="registrations">
+        <div class="section-heading"><div><h1>Course Registrations</h1><p>Set when students can register, and review each student's subjects.</p></div><span id="regWindowStatus" class="status-pill warn"></span></div>
+        <form id="registrationWindowForm" class="panel compact-form data-block"><h3>Registration window</h3><p class="muted">Students can register only between these dates. Saving posts a notice to every student.</p><div class="form-row"><label>Opens<input id="regWindowOpens" type="date" required></label><label>Closes<input id="regWindowCloses" type="date" required></label></div><label>Notice to students<textarea id="regWindowNotice" rows="2" maxlength="240" placeholder="Optional message shown with the dates"></textarea></label><button class="btn primary" type="submit">Save window and notify students</button><p id="regWindowMessage" class="form-message"></p></form>
+        <div class="panel data-block"><div class="panel-heading"><div><h3>Registration status</h3><p>Who has registered and who is still pending</p></div></div><div class="inline-controls"><select id="regFilterDepartment" aria-label="Filter by department"><option value="all">All departments</option></select><button type="button" class="btn secondary" id="bulkRegisterBtn">Register all pending (default subjects)</button><span id="bulkRegisterMessage" class="form-message"></span></div><div class="table-wrap"><table><thead><tr><th>Student</th><th>ID</th><th>Branch / Section</th><th>Status</th><th>Registered on</th></tr></thead><tbody id="regStatusBody"></tbody></table></div></div>
+        <form id="adminRegistrationForm" class="panel registration-editor"><label>Select student<select id="registrationStudent"></select></label><div id="adminRegistrationChoices" class="subject-choice-grid"></div><div class="dialog-actions"><p id="adminRegistrationMessage" class="form-message"></p><button class="btn primary" type="submit">Save Registration</button></div></form>
+      </section>
+
+      <section class="page-section" id="academicClearance">
+        <div class="section-heading">
+          <div>
+            <h1>Academic & Examination Clearance (No-Due)</h1>
+            <p>Authorize student hall ticket releases, manage fee clearance holds, and verify library/lab sign-offs.</p>
+          </div>
+          <div class="inline-controls">
+            <input id="clearanceSearch" type="search" placeholder="Search student name or ID..." style="max-width:240px">
+            <select id="clearanceStatusFilter" style="max-width:180px">
+              <option value="all">All Clearances</option>
+              <option value="Eligible">Eligible (Cleared)</option>
+              <option value="On Hold">On Hold (Pending)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="stat-grid student-stats mb-20">
+          <article class="stat-card">
+            <span class="stat-icon green">👥</span>
+            <div>
+              <p>Total Students</p>
+              <strong id="clearanceTotalStudents">0</strong>
+              <small>Registered Term</small>
+            </div>
+          </article>
+          <article class="stat-card">
+            <span class="stat-icon blue">✓</span>
+            <div>
+              <p>Exam Cleared (Eligible)</p>
+              <strong id="clearanceEligibleCount" class="good-text">0</strong>
+              <small>Hallticket Authorized</small>
+            </div>
+          </article>
+          <article class="stat-card">
+            <span class="stat-icon amber">⚠</span>
+            <div>
+              <p>On Hold (Dues Pending)</p>
+              <strong id="clearanceOnHoldCount" class="warn-text">0</strong>
+              <small>Hallticket Withheld</small>
+            </div>
+          </article>
+          <article class="stat-card">
+            <span class="stat-icon purple">#</span>
+            <div>
+              <p>Attendance Risks (<75%)</p>
+              <strong id="clearanceAttRiskCount">0</strong>
+              <small>Condonation Alert</small>
+            </div>
+          </article>
+        </div>
+
+        <div class="panel kl-table-panel">
+          <div class="table-wrap">
+            <table class="kl-grid-table">
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Student ID</th>
+                  <th>Department</th>
+                  <th>Attendance</th>
+                  <th>Tuition Fee</th>
+                  <th>Exam Fee</th>
+                  <th>Library / Labs</th>
+                  <th>Clearance Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="adminClearanceTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="page-section" id="branchReports">
+        <div class="section-heading"><div><h1>Branch & Section Results</h1><p>Pass, fail, and detained counts with average pass percentage. Detained means attendance below 75%.</p></div><div class="inline-controls"><select id="branchReportBranch" aria-label="Branch"></select><select id="branchReportSection" aria-label="Section"></select><button type="button" class="btn secondary" id="exportBranchReportBtn">Export CSV</button><button type="button" class="btn secondary" id="downloadSectionSheetBtn">Download Result Sheet (PDF)</button></div></div>
+        <div id="branchReportStats" class="stat-grid"></div>
+        <div class="panel data-block"><div class="panel-heading"><div><h3>Section-wise summary</h3><p>Every branch and section in the selected filter</p></div></div><div class="table-wrap"><table><thead><tr><th>Branch</th><th>Section</th><th>Students</th><th>Passed</th><th>Failed</th><th>Detained</th><th>Suspended</th><th>Pass %</th><th>Average score</th></tr></thead><tbody id="branchReportBody"></tbody></table></div></div>
+        <div class="panel data-block"><div class="panel-heading"><div><h3>Student outcomes</h3><p>Individual result status for the selected filter</p></div></div><div class="table-wrap"><table><thead><tr><th>Student</th><th>ID</th><th>Branch / Section</th><th>Average</th><th>Attendance</th><th>Status</th><th>Failed subjects</th></tr></thead><tbody id="branchStudentBody"></tbody></table></div></div>
+      </section>
+
+      <section class="page-section" id="classrooms">
+        <div class="section-heading"><div><h1>Classrooms</h1><p>See empty rooms by period, allot rooms to sections, and move a class to another room.</p></div><div class="inline-controls"><select id="adminRoomsDay" aria-label="Day"></select><select id="adminRoomsPeriod" aria-label="Period"></select></div></div>
+        <div class="panel" id="adminRoomsResult"></div>
+        <div class="panel data-block" id="facultyLocationsPanel"><div class="panel-heading"><div><h3>Faculty locations</h3><p>Where each faculty member is teaching for the day/period selected above</p></div></div><div id="facultyLocationsList"></div></div>
+        <form id="roomAllotForm" class="panel term-form data-block"><div><h3>Allot a classroom</h3><p class="muted">A room cannot hold two classes in the same period, and a section cannot be in two rooms at once.</p></div><label>Day<select id="allotDay" required></select></label><label>Period<select id="allotPeriod" required></select></label><label>Room<select id="allotRoom" required></select></label><label>Course<select id="allotCourse" required></select></label><label>Section<input id="allotSection" required placeholder="e.g. S-9" maxlength="12"></label><button class="btn primary" type="submit">Allot Room</button><p id="allotMessage" class="form-message"></p></form>
+        <div class="panel data-block"><div class="panel-heading"><div><h3>Current allotments</h3><p>Change the room or remove an allotment</p></div></div><div class="table-wrap"><table><thead><tr><th>Day</th><th>Period</th><th>Course</th><th>Faculty</th><th>Section</th><th>Room</th><th>Action</th></tr></thead><tbody id="allotmentBody"></tbody></table></div></div>
+      </section>
+
+      <section class="page-section" id="substitutions">
+        <div class="section-heading"><div><h1>Leave &amp; Substitution Requests</h1><p>Approve faculty leave requests and assign a free substitute.</p></div><div class="inline-controls"><select id="subStatusFilter" aria-label="Filter by status"><option value="all">All</option><option value="Pending">Pending</option><option value="Approved">Approved</option><option value="Rejected">Rejected</option></select></div></div>
+        <div id="substitutionStats" class="stat-grid"></div>
+        <div id="substitutionQueue" class="panel"></div>
+      </section>
+
+      <section class="page-section" id="bonusMarks">
+        <div class="section-heading"><div><h1>Co-curricular Bonus Marks</h1><p>Approve or reject faculty requests to add bonus internal points for co-curricular achievement.</p></div></div>
+        <div id="bonusQueue" class="panel"></div>
+      </section>
+
+      <section class="page-section" id="announcements">
+        <div class="section-heading"><div><h1>Announcements</h1><p>Publish concise academic notices.</p></div></div>
+        <form id="adminAnnouncementForm" class="panel announcement-form"><label>Title<input id="adminAnnouncementTitle" required maxlength="80"></label><label>Audience<select id="adminAnnouncementAudience"><option value="all">Everyone</option><option value="student">Students</option><option value="faculty">Faculty</option></select></label><label class="full-span">Message<textarea id="adminAnnouncementMessage" rows="3" maxlength="240" required></textarea></label><button class="btn primary" type="submit">Publish Announcement</button><p id="adminAnnouncementStatus" class="form-message"></p></form>
+        <div id="adminAnnouncementList" class="notice-list"></div>
+      </section>
+
+      <section class="page-section" id="settings">
+        <div class="section-heading"><div><h1>Grading Settings</h1><p>Customize the minimum mark required for each grade.</p></div></div>
+        <form id="gradingForm" class="panel grading-form">
+          <div class="grade-row"><strong>A+</strong><label>Minimum marks<input id="gradeAPlus" type="number" min="0" max="100"></label></div>
+          <div class="grade-row"><strong>A</strong><label>Minimum marks<input id="gradeA" type="number" min="0" max="100"></label></div>
+          <div class="grade-row"><strong>B</strong><label>Minimum marks<input id="gradeB" type="number" min="0" max="100"></label></div>
+          <div class="grade-row"><strong>C</strong><label>Minimum marks<input id="gradeC" type="number" min="0" max="100"></label></div>
+          <div class="grade-row"><strong>D</strong><label>Minimum marks<input id="gradeD" type="number" min="0" max="100"></label></div>
+          <p class="muted">Marks below the D threshold receive grade F.</p>
+          <button class="btn primary" type="submit">Save Grading Format</button><p id="gradingMessage" class="form-message"></p>
+        </form>
+      </section>
+
+      <section class="page-section" id="systemSettings">
+        <div class="section-heading"><div><h1>System & Backup</h1><p>Configure report identity and protect browser-stored data.</p></div></div>
+        <div class="management-grid">
+          <form id="schoolProfileForm" class="panel compact-form"><h3>University profile</h3><label>Institution name<input id="schoolName" required></label><label>Report subtitle<input id="schoolSubtitle" required></label><label>Contact details<textarea id="schoolContact" rows="3" required></textarea></label><button class="btn primary" type="submit">Save Profile</button><p id="schoolProfileMessage" class="form-message"></p></form>
+          <div class="panel compact-form"><h3>Data backup</h3><p class="muted">Export all application records as JSON or restore a previous backup.</p><button id="exportBackupBtn" class="btn primary" type="button">Export JSON Backup</button><label class="file-input">Restore backup<input id="importBackupInput" type="file" accept="application/json,.json"></label><button id="exportStudentsBtn" class="btn secondary" type="button">Export Student List (.csv)</button><p id="backupMessage" class="form-message"></p></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="studentDialog">
+    <form id="studentForm" class="dialog-form">
+      <div class="dialog-heading"><h2 id="studentDialogTitle">Add Student</h2><button type="button" class="icon-btn" id="closeStudentDialog">×</button></div>
+      <input id="studentId" type="hidden">
+      <label>Full name<input id="studentName" type="text" required></label>
+      <label>KL University email<input id="studentEmail" type="email" placeholder="25000xxxxx@kluniversity.in" pattern="25000[0-9]{5}@kluniversity\.in" required></label>
+      <label>Student ID<input id="studentRoll" type="text" inputmode="numeric" pattern="25000[0-9]{5}" placeholder="e.g. 2500032284" required></label>
+      <label>Department<select id="studentClass" required><option value="CSE">CSE</option><option value="IT">IT</option><option value="ME">ME</option><option value="CE">CE</option><option value="ECE">ECE</option><option value="EEE">EEE</option><option value="ChE">ChE</option><option value="BT">BT</option><option value="AE">AE</option><option value="AI/DS">AI/DS</option></select></label>
+      <div class="form-row"><label>Batch<input id="studentBatch" placeholder="e.g. 2025-2029" required></label><label>Section<input id="studentSection" placeholder="e.g. CSE-1" required></label></div>
+      <label>Date of birth<input id="studentDateOfBirth" type="date"></label>
+      <div class="form-row"><label>Parent / guardian<input id="studentParentName" type="text"></label><label>Parent contact<input id="studentParentContact" type="tel" maxlength="15" placeholder="e.g. 9876543210"></label></div>
+      <fieldset class="subject-registration"><legend>Disciplinary status</legend><label><input type="checkbox" id="studentSuspended"> Suspended</label><label>Reason (shown with the Suspended status)<input id="studentSuspensionReason" placeholder="e.g. Disciplinary committee decision, 04 Oct 2026"></label></fieldset>
+      <p class="muted small-text">New students can log in using their email and 10-digit student ID as the password.</p>
+      <div class="dialog-actions"><button type="button" class="btn secondary" id="cancelStudentDialog">Cancel</button><button class="btn primary" type="submit">Save Student</button></div>
+      <p id="studentFormMessage" class="form-message"></p>
+    </form>
+  </dialog>
+  <dialog id="facultyDialog">
+    <form id="facultyForm" class="dialog-form">
+      <div class="dialog-heading"><h2 id="facultyDialogTitle">Add Faculty</h2><button type="button" class="icon-btn" id="closeFacultyDialog">×</button></div>
+      <input id="facultyId" type="hidden">
+      <label>Full name<input id="facultyName" required></label>
+      <label>KL University email<input id="facultyEmail" type="email" placeholder="25000xxxxx@kluniversity.in" pattern="25000[0-9]{5}@kluniversity\.in" required></label>
+      <fieldset class="subject-registration"><legend>Assigned subjects</legend><div id="adminFacultySubjectChoices" class="subject-choice-grid"></div></fieldset>
+      <fieldset class="subject-registration"><legend>Mentor sections (optional)</legend><p class="muted small-text">Sections this faculty member mentors for cross-subject academic advising.</p><div id="adminMentorSectionChoices" class="subject-choice-grid"></div></fieldset>
+      <p class="muted small-text">The default password is the 10-digit ID in the email. Admin can reset it at any time.</p>
+      <div class="dialog-actions"><button type="button" class="btn secondary" id="cancelFacultyDialog">Cancel</button><button class="btn primary" type="submit">Save Faculty</button></div>
+      <p id="facultyFormMessage" class="form-message"></p>
+    </form>
+  </dialog>
+  <script src="../modules/app.js"></script>
+  <script src="../modules/student-data.js"></script>
+  <script src="../modules/admin-plus.js"></script>
+  <script src="../login/logout.js"></script>
+</body>
+</html>

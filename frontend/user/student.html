@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student portal | K L Deemed to be University</title>
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Caveat:wght@500&family=Source+Sans+3:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="portal.css">
+</head>
+<body class="portal" data-role="student">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <aside class="sidebar" id="sidebar">
+    <div class="rail-brand"><span class="rail-mark" aria-hidden="true">KL</span><div><strong>KL ERP</strong><small>Student portal</small></div></div>
+    <nav class="side-nav" aria-label="Student navigation">
+      <button class="nav-link active" data-section="studentOverview"><span>Home</span></button>
+
+      <p class="nav-group">Semester</p>
+      <button class="nav-link" data-section="academicRegistration"><span>Course registration</span><b class="nav-badge" id="badgeRegistration" hidden></b></button>
+      <button class="nav-link" data-section="myCourses"><span>Courses and handouts</span></button>
+      <button class="nav-link" data-section="myAttendance"><span>Attendance</span></button>
+      <button class="nav-link" data-section="mySchedule"><span>Timetable</span></button>
+      <button class="nav-link" data-section="emptyRooms"><span>Empty classrooms</span></button>
+      <button class="nav-link" data-section="myAssignments"><span>Assignments</span><b class="nav-badge" id="badgeAssignments" hidden></b></button>
+
+      <p class="nav-group">Examinations</p>
+      <button class="nav-link" data-section="myInternals"><span>Internals</span></button>
+      <button class="nav-link" data-section="answerScripts"><span>Answer scripts</span></button>
+      <button class="nav-link" data-section="examSeating"><span>Seating</span></button>
+      <button class="nav-link" data-section="hallTicketSection"><span>Hall ticket</span></button>
+      <button class="nav-link" data-section="endExamResults"><span>End exam result</span></button>
+      <button class="nav-link" data-section="myCgpa"><span>My CGPA</span></button>
+
+      <p class="nav-group">Plan and respond</p>
+      <button class="nav-link" data-section="targetSimulator"><span>Target SGPA</span></button>
+      <button class="nav-link" data-section="studentFeedback"><span>Feedback</span><b class="nav-badge" id="badgeFeedback" hidden></b></button>
+
+      <p class="nav-group">Campus</p>
+      <button class="nav-link" data-section="myLibrary"><span>Library</span></button>
+      <button class="nav-link" data-section="counsellingDiary"><span>Counselling diary</span></button>
+      <button class="nav-link" data-section="academicClearance"><span>Exam clearance</span></button>
+
+      <p class="nav-group">Account</p>
+      <button class="nav-link" data-section="myReport"><span>Report card</span></button>
+      <button class="nav-link" data-section="myProfile"><span>Profile</span></button>
+    </nav>
+    <button class="nav-link logout" id="logoutBtn"><span>Sign out</span></button>
+  </aside>
+
+  <div class="dashboard-main">
+    <header class="topbar">
+      <button id="menuBtn" class="icon-btn" aria-label="Open menu">&#9776;</button>
+      <h2 id="pageTitle">Home</h2>
+      <span class="term-chip" id="termChip"></span>
+      <div class="search-box">
+        <input type="search" id="globalErpSearch" placeholder="Jump to a page or course" autocomplete="off" aria-label="Search the portal">
+        <div id="globalSearchResults" class="search-drop" hidden></div>
+      </div>
+      <button class="user-chip" id="profileSettingsBtn" type="button" aria-label="Open your profile">
+        <span class="avatar" id="userInitial">S</span>
+        <span class="user-text"><strong id="currentUserName">Student</strong><small id="userSub">Student</small></span>
+      </button>
+    </header>
+    <main class="content-area" id="main">
+      <span id="welcomeName" hidden></span>
+      <section class="page-section active" id="studentOverview"></section>
+      <section class="page-section" id="academicRegistration"></section>
+      <section class="page-section" id="myCourses"></section>
+      <section class="page-section" id="myAttendance"></section>
+      <section class="page-section" id="mySchedule"></section>
+      <section class="page-section" id="emptyRooms"></section>
+      <section class="page-section" id="myAssignments"></section>
+      <section class="page-section" id="myInternals"></section>
+      <section class="page-section" id="answerScripts"></section>
+      <section class="page-section" id="examSeating"></section>
+      <section class="page-section" id="hallTicketSection"></section>
+      <section class="page-section" id="endExamResults"></section>
+      <section class="page-section" id="myCgpa"></section>
+      <section class="page-section" id="targetSimulator"></section>
+      <section class="page-section" id="studentFeedback"></section>
+      <section class="page-section" id="myLibrary"></section>
+      <section class="page-section" id="counsellingDiary"></section>
+      <section class="page-section" id="academicClearance"></section>
+      <section class="page-section" id="myReport"></section>
+      <section class="page-section" id="myProfile"></section>
+    </main>
+  </div>
+
+  <dialog id="portalModal" class="modal">
+    <div class="modal-card" id="portalModalCard">
+      <header class="modal-head"><h3 id="portalModalTitle"></h3><button type="button" class="icon-btn" id="portalModalClose" aria-label="Close">&times;</button></header>
+      <div class="modal-body" id="portalModalBody"></div>
+    </div>
+  </dialog>
+  <div id="printSheet" aria-hidden="true"></div>
+
+  <script src="../modules/app.js"></script>
+  <script src="../modules/student-data.js"></script>
+  <script src="student.js"></script>
+  <script src="../modules/student-more.js"></script>
+  <script src="../login/logout.js"></script>
+</body>
+</html>

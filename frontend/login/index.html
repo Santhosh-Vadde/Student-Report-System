@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign in | K L Deemed to be University</title>
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="login.css">
+</head>
+<body class="login">
+  <main class="login-shell">
+    <section class="login-hero">
+      <svg class="hero-gear" viewBox="0 0 460 460" aria-hidden="true" fill="none" stroke="currentColor">
+        <circle cx="230" cy="230" r="200" stroke="#fff" stroke-opacity=".07" stroke-width="38" stroke-dasharray="30 22.36"/>
+        <circle cx="230" cy="230" r="172" stroke-width="2"/>
+        <circle cx="230" cy="230" r="150" stroke-width="1.5"/>
+        <circle cx="230" cy="230" r="46" stroke-width="2"/>
+        <path d="M230 84v100M230 276v100M84 230h100M276 230h100" stroke-width="1.5"/>
+      </svg>
+      <header class="hero-brand">
+        <div class="hero-mark" aria-hidden="true">KL</div>
+        <div><strong>K L Deemed to be University</strong><span>Koneru Lakshmaiah Education Foundation</span></div>
+      </header>
+      <div class="hero-copy">
+        <h1>Your semester, in one place.</h1>
+        <p>Attendance, marks, course registration and hall tickets for the semester in progress. Sign in with the ID and password issued to you.</p>
+      </div>
+      <div class="hero-term">
+        <div><strong>Odd Semester</strong>2026-2027</div>
+        <div><strong>Vaddeswaram</strong>and Hyderabad campuses</div>
+      </div>
+    </section>
+
+    <section class="login-panel">
+      <form id="loginForm" class="login-form" novalidate>
+        <h2>Sign in</h2>
+        <p class="lead">Faculty and administrators also enter their 4-digit MFA code after their password.</p>
+
+        <label class="field">Username
+          <input id="loginEmail" type="text" placeholder="Your university ID" autocomplete="username" autofocus required>
+        </label>
+
+        <label class="field">Password
+          <span class="password-wrap">
+            <input id="loginPassword" type="password" placeholder="Allotted or changed password" autocomplete="current-password" required>
+            <button class="reveal" id="revealPassword" type="button" aria-label="Show password">Show</button>
+          </span>
+        </label>
+
+        <div class="field">
+          <span id="captchaLabel">Type the characters shown</span>
+          <div class="captcha-row">
+            <div id="captchaDisplay" class="captcha-tile" role="img" aria-labelledby="captchaLabel"><span id="captchaCode">K9X4M</span></div>
+            <button type="button" id="refreshCaptchaBtn" class="captcha-refresh" aria-label="Get a new code">&#8635;</button>
+          </div>
+          <input id="captchaInput" type="text" placeholder="Characters from the image" autocomplete="off" aria-labelledby="captchaLabel" required>
+        </div>
+
+        <div id="otpGroup" class="otp" hidden>
+          <div class="otp-head"><label for="otpInput">MFA code</label><small id="otpTarget"></small></div>
+          <div class="otp-row">
+            <input id="otpInput" type="text" maxlength="4" inputmode="numeric" autocomplete="off" placeholder="0000">
+          </div>
+          <p class="otp-demo" id="otpDemoBox"></p>
+        </div>
+
+        <button class="submit" id="loginSubmitBtn" type="submit">Sign in</button>
+        <p id="authMessage" class="login-message" role="alert"></p>
+
+        <div class="help-row">
+          <a href="#" id="forgotPasswordLink">Forgot password?</a>
+          <a href="../registration/signup.html">Create an account</a>
+        </div>
+
+        <div class="demo">
+          <p>Trying the demo? Fill in an account, then complete the captcha.</p>
+          <div class="demo-buttons">
+            <button type="button" data-demo="2500032283|2500032283">Student</button>
+            <button type="button" data-demo="2500032294|Faculty@KLU2026">Faculty</button>
+            <button type="button" data-demo="admin_klu|Admin@KLU#2026">Admin</button>
+          </div>
+        </div>
+      </form>
+      <p class="legal">&copy; 2024 K L Deemed to be University. All rights reserved.</p>
+    </section>
+  </main>
+  <script src="../modules/app.js"></script>
+  <script src="login.js"></script>
+</body>
+</html>
